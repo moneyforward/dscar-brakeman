@@ -1,0 +1,61 @@
+version: 2.1
+
+description: Delta Brakeman Reports
+orbs:
+  dscar: naokikimura/dscar@0.0.6
+executors:
+  default:
+    description: Use a CircleCI convenience image to analyze code statically
+    docker:
+    - image: circleci/ruby:latest
+commands:
+  execute:
+    parameters:
+      analysis-prepare:
+        description: Specify the required steps before Brakeman if necessary
+        type: steps
+        default:
+          - run: sudo gem install brakeman
+      analysis-arguments:
+        description: Arguments of brakeman command
+        type: string
+        default: ""
+      test-results-path:
+        description: Specify the value of the path parameter in the store_test_results step if you need to change it
+        type: string
+        default: "/tmp/test-results"
+    steps:
+      - dscar/execute:
+          analysis-name: Brakeman
+          analysis-command: brakeman
+          analysis-prepare: << parameters.analysis-prepare >>
+          analysis-arguments: << parameters.analysis-arguments >> -f junit
+          calculate-options: --test-case-key='concat(@classname,"#",@name,"=>",normalize-space())' --namespace='brakeman=https://brakemanscanner.org/'
+          test-results-path: << parameters.test-results-path >>
+jobs:
+  execute:
+    description: Calculate the difference of Brakeman results between HEAD branch and BASE branch
+    parameters:
+      executor:
+        type: executor
+        default: default
+      analysis-prepare:
+        description: Specify the required steps before brakeman if necessary
+        type: steps
+        default:
+          - run: sudo gem install brakeman
+      analysis-arguments:
+        description: Arguments of brakeman command
+        type: string
+        default: ""
+      test-results-path:
+        description: Specify the value of the path parameter in the store_test_results step if you need to change it
+        type: string
+        default: "/tmp/test-results"
+    executor: << parameters.executor >>
+    steps:
+      - execute:
+          analysis-prepare: << parameters.analysis-prepare >>
+          analysis-arguments: << parameters.analysis-arguments >>
+          test-results-path: << parameters.test-results-path >>
+
