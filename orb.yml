@@ -2,7 +2,7 @@ version: 2.1
 
 description: Delta Brakeman Reports
 orbs:
-  dscar: naokikimura/dscar@0.0.6
+  dscar: naokikimura/dscar@0.0.10
 executors:
   default:
     description: Use a CircleCI convenience image to analyze code statically
@@ -58,4 +58,3 @@ jobs:
           analysis-prepare: << parameters.analysis-prepare >>
           analysis-arguments: << parameters.analysis-arguments >>
           test-results-path: << parameters.test-results-path >>
-
