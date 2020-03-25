@@ -40,12 +40,17 @@ steps:
             name: export TRANSFORMATION_ARGUMENTS
             command: |
               set -x
-              cat \<<-EOT >> $BASH_ENV
-              export TRANSFORMATION_ARGUMENTS=(
-                -rM
-                '.warnings | map(@html "<file name=\"\(.file)\"><error source=\"\(.check_name)\" severity=\"\(.confidence)\" line=\"\(.line)\" column=\"0\" message=\"\(.message)\"/></file>") | "<checkstyle>\(join(""))</checkstyle>"'
-              )
+              FILTER="$(
+              cat \<<-EOT | tr -s ' \n' ' '
+              .warnings |
+              map(
+                @html "<file name=\"\(.file)\"><error source=\"\(.check_name)\" severity=\"\(.confidence)\" line=\"\(.line)\" column=\"0\" message=\"\(.message)\"/></file>"
+              ) |
+              "<checkstyle>\(join(""))</checkstyle>"
               EOT
+              )"
+              declare -ax TRANSFORMATION_ARGUMENTS=( -rM "$FILTER" )
+              echo "$(declare -p TRANSFORMATION_ARGUMENTS)" >> $BASH_ENV
         - steps: << parameters.prepare >>
       analysis-command: brakeman
       analysis-arguments: << parameters.analysis-arguments >> -f json
