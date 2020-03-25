@@ -3,11 +3,11 @@ version: 2.1
 description: Delta Brakeman Reports
 
 display:
-  home_url: https://github.com/naokikimura/dscar-brakeman
-  source_url: https://github.com/naokikimura/dscar-brakeman
+  home_url: https://corp.moneyforward.com/
+  source_url: https://github.com/moneyforward/dscar-brakeman
 
 orbs:
-  dscar: naokikimura/dscar@0.9.0
+  dscar: moneyforward/dscar@1.0.0
 
 executors:
   default:
