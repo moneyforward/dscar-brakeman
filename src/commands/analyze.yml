@@ -50,6 +50,7 @@ steps:
               EOT
               )"
               declare -ax TRANSFORMATION_ARGUMENTS=( -rM "$FILTER" )
+              echo "$(declare -p TRANSFORMATION_ARGUMENTS)" >> $BASH_ENV
         - steps: << parameters.prepare >>
       analysis-command: brakeman
       analysis-arguments: << parameters.analysis-arguments >> -f json
