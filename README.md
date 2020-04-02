@@ -1,5 +1,8 @@
 # dscar-brakeman
 
+[![CircleCI](https://circleci.com/gh/moneyforward/dscar-brakeman.svg?style=svg)](https://circleci.com/gh/moneyforward/dscar-brakeman)
+
+
 Delta [Brakeman](https://brakemanscanner.org) reports running on CircleCI
 
 See https://circleci.com/orbs/registry/orb/moneyforward/dscar-brakeman for details.
