@@ -55,13 +55,7 @@ execute:
       description: Specify analysis steps
       type: steps
       default:
-        - analyze:
-            prepare: []
-    calculate:
-      description: Specify the steps for calculating the difference
-      type: steps
-      default:
-        - dscar/calculate
+        - analyze
     test-results-path:
       description: Specify the value of the path parameter in the store_test_results step if you need to change it
       type: string
@@ -77,10 +71,8 @@ execute:
   executor: << parameters.executor >>
   resource_class: << parameters.resource_class >>
   steps:
-    - install-analyzer
     - dscar/execute-and-evaluate:
         analyze: << parameters.analyze >>
-        calculate: << parameters.calculate >>
         test-results-path: << parameters.test-results-path >>
         vcs-api-token: << parameters.vcs-api-token >>
         circle_compare_url-path: << parameters.circle_compare_url-path >>
